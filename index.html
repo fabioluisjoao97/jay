@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Minha Jade</title>
+
+<style>
+    :root {
+        --cor-envelope: #ff8fa3;
+        --cor-envelope-aba: #ff758f;
+        --cor-carta: #fff0f3;
+        --cor-texto: #590d22;
+        --cor-botao: #0047AB;
+    }
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a1a1a;
+    }
+
+    .container-central {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .envelope-wrapper {
+        position: relative;
+        cursor: pointer;
+        perspective: 1000px;
+    }
+
+    /* 📸 CAPA DA CARTA */
+    .capa {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 140px;
+        height: 140px;
+
+        object-fit: cover;
+
+        border-radius: 15px;
+        border: 2px solid white;
+
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+
+        z-index: 5;
+    }
+
+    .envelope {
+        position: relative;
+        width: 280px;
+        height: 180px;
+        background-color: var(--cor-envelope);
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        z-index: 2;
+    }
+
+    .envelope::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        z-index: 4;
+        border-left: 140px solid transparent;
+        border-right: 140px solid transparent;
+        border-top: 100px solid var(--cor-envelope-aba);
+        transform-origin: top;
+        transition: transform 0.5s 0.2s;
+    }
+
+    .carta {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        width: 260px;
+        height: 160px;
+        background-color: var(--cor-carta);
+        padding: 20px;
+        box-sizing: border-box;
+        transition: transform 0.7s ease-in-out, height 0.7s;
+        z-index: 1;
+        border-radius: 5px;
+        overflow-y: auto;
+    }
+
+    .carta p {
+        font-size: 14px;
+        color: var(--cor-texto);
+        line-height: 1.5;
+        margin: 0;
+        text-align: center;
+        font-style: italic;
+        opacity: 0;
+        transition: opacity 0.5s 0.6s;
+    }
+
+    .envelope-wrapper.aberto .envelope::before {
+        transform: rotateX(180deg);
+        z-index: 0;
+    }
+
+    .envelope-wrapper.aberto .carta {
+        transform: translateY(-130px);
+        height: auto;
+        min-height: 280px;
+        z-index: 3;
+    }
+
+    .envelope-wrapper.aberto .carta p {
+        opacity: 1;
+    }
+
+    .btn-abrir {
+        margin-top: 30px;
+        padding: 12px 30px;
+        background-color: var(--cor-botao);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .coracao {
+        position: absolute;
+        font-size: 25px;
+        animation: subir 2.5s ease-out forwards;
+        z-index: 20;
+    }
+
+    @keyframes subir {
+        0% { transform: translateY(0) scale(0); opacity: 1; }
+        100% { transform: translateY(-350px) scale(1.5) rotate(45deg); opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container-central">
+
+    <div class="envelope-wrapper" id="env">
+
+        <!-- FOTO NA CAPA -->
+        <img src="foto1.jpeg" class="capa">
+
+        <div class="carta">
+            <p>
+                Querida Jade, tu és uma pessoa muito incrível e uma mulher maravilhosa. Amo o teu jeito de ser, o teu olhar, a tua simplicidade e a maneira como consegues deixar tudo mais bonito só com a tua presença. Não importa o tempo que passe, em qualquer vida eu ainda escolheria você. You are my favorite girl. I will always be with you. Eu te amo muito ❤️❤️.Com muito amor,FJ!
+            </p>
+        </div>
+
+        <div class="envelope"></div>
+    </div>
+
+    <button class="btn-abrir" onclick="toggle()">ABRIR CARTA</button>
+
+</div>
+
+<script>
+function toggle() {
+    const env = document.getElementById('env');
+    const btn = document.querySelector('.btn-abrir');
+
+    env.classList.toggle('aberto');
+
+    btn.innerText = env.classList.contains('aberto')
+        ? "FECHAR"
+        : "ABRIR CARTA";
+
+    if (env.classList.contains('aberto')) {
+        lancarCoracoes();
+    }
+}
+
+function lancarCoracoes() {
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.classList.add('coracao');
+            c.innerHTML = ['❤️','💖','💕','💙'][Math.floor(Math.random()*4)];
+
+            c.style.left = (window.innerWidth/2 + (Math.random()*160 - 80)) + "px";
+            c.style.top = (window.innerHeight/2) + "px";
+
+            document.body.appendChild(c);
+
+            setTimeout(() => c.remove(), 2500);
+        }, i * 150);
+    }
+}
+</script>
+
+</body>
+</html>
